@@ -1,12 +1,10 @@
-const dotenv = require("dotenv").config()
 const mongoose = require("mongoose")
 
-try{
-	mongoose.connect(dotenv.parsed.url)
-}
-catch (e){
-	console.log(e.message)
-}
+
+require("dotenv").config();
+const db_url = process.env.db_url
+
+mongoose.connect(db_url)
 
 const UserSchema = new mongoose.Schema({
     email: { type: String, unique: true },
