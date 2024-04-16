@@ -1,6 +1,8 @@
 const dotenv = require("dotenv").config()
 const mongoose = require("mongoose")
 
+
+console.log(dotenv.parsed.url)
 mongoose.connect(dotenv.parsed.url)
 
 const UserSchema = new mongoose.Schema({
