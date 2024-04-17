@@ -5,8 +5,11 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const { authorizationSchema, urlRequestSchema } = require("./inputValidations")
 const { User, Url } = require("./db")
-const dotenv = require("dotenv").config()
+
 const ShortUniqueId = require('short-unique-id');
+
+require("dotenv").config();
+const jwt = process.env.db_url
 
 const app = express()
 app.use(express.json())
@@ -40,7 +43,7 @@ const authMiddleware = (req, res, next) => {
     }
     const authToken = header.split(" ")[1]
     try {
-        const verify = jwt.verify(authToken, dotenv.parsed.jwt)
+        const verify = jwt.verify(authToken, jwt)
         req.userId = verify.id
         next()
     } catch (e) {
@@ -60,7 +63,7 @@ app.post("/register", inputValidationMiddleware, async (req, res) => {
             email: req.body.email,
             password: encryptPassword
         })
-        const token = jwt.sign({ id: DbQuery._id.toString() }, dotenv.parsed.jwt)
+        const token = jwt.sign({ id: DbQuery._id.toString() }, jwt)
         res.status(200).send({ jwt: token })
     } catch (e) {
         console.log(e)
@@ -74,7 +77,7 @@ app.post("/login", inputValidationMiddleware, async (req, res) => {
         const id = DbQuery.id.toString()
         const check = bcrypt.compareSync(req.body.password, DbQuery.password)
         if (check) {
-            const token = jwt.sign({ id }, dotenv.parsed.jwt)
+            const token = jwt.sign({ id }, jwt)
             return res.status(200).send({ jwt: token })
         }
         res.status(403).send({ msg: "Incorrect Password" })
