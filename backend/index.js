@@ -9,7 +9,7 @@ const { User, Url } = require("./db")
 const ShortUniqueId = require('short-unique-id');
 
 require("dotenv").config();
-const jwt = process.env.db_url
+const jwt = process.env.jwt
 
 const app = express()
 app.use(express.json())
