@@ -25,7 +25,7 @@ export default function UrlTable({ details, deleteFn, toastFn }) {
             <TableRow>
                 <TableCell className="font-medium "><a href={`${url}get/${shortId}/`} target="__blank" >{shortId}</a>
                     <button onClick={copyShortUrl} className="ml-2 font-medium"><FaRegCopy /></button></TableCell>
-                <TableCell className="text-center "><a href={`${Url}/`} target="__blank" >{Url}</a>
+                <TableCell className="text-center "><a href={`${Url}`} target="__blank" >{Url}</a>
                     <button onClick={copyUrl} className="ml-2 font-medium"><FaRegCopy /></button></TableCell>
                 <TableCell className="text-center ">{Clicks}</TableCell>
                 <TableCell onClick={() => { deleteFn(shortId) }} className="text-right text-lg md:text-xl cursor-pointer"> <button className="hover:bg-red-500 p-2  rounded-3xl"><MdOutlineDeleteOutline /></button></TableCell>
