@@ -29,21 +29,19 @@ const Home = () => {
     const { toast } = useToast()
 
     const fetchTableData = useCallback(async () => {
-        const fetchData = await GetUrlList()
-        if (fetchData.status === "OK") {
-            setTableData({ error: false, data: fetchData.data.urls })
-        } else {
-            setTableData({ error: true })
-            toast({
-                title: "Error",
-                description: fetchData.msg
-            })
+        if (loginStatus === true) {
+            const fetchData = await GetUrlList()
+            if (fetchData.status === "OK") {
+                setTableData({ error: false, data: fetchData.data.urls })
+            } else {
+                setTableData({ error: true })
+                toast({
+                    title: "Error",
+                    description: fetchData.msg
+                })
+            }
         }
-        toast({
-            title: "Success",
-            description: fetchData.msg
-        })
-    }, [toast])
+    }, [toast, loginStatus])
 
     useEffect(() => {
         AuthCheck()
@@ -56,6 +54,10 @@ const Home = () => {
                     setLoginStatus(false)
                 }
             })
+        const clearId = setInterval(() => { fetchTableData() }, 1000 * 20)
+        return (
+            () => clearInterval(clearId)
+        )
     }, [setLoginStatus, fetchTableData])
 
     // click event
