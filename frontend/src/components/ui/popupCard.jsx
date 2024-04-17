@@ -1,6 +1,7 @@
 import { IoCloseSharp } from "react-icons/io5";
 import { FiRefreshCw } from "react-icons/fi";
 import { FaRegCopy } from "react-icons/fa";
+import url from '../../url'
 
 export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, shortUrlData }) {
     return showCard ? (
@@ -18,8 +19,8 @@ export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, sh
                     </div>
                     <div className="flex items-center m-1 lg:m-2">
                         <h1 className="text-md lg:text-xl">Short Url:</h1>
-                        <a href={`http://localhost:54321/get/${shortUrlData.shortUrl}/`} target="__blank" className="text-md lg:text-xl ml-2">{shortUrlData.shortUrl}</a>
-                        <div onClick={() => navigator.clipboard.writeText(`http://localhost:54321/get/${shortUrlData.shortUrl}/`)} className="cursor-pointer p-2 rounded-2xl hover:bg-slate-200 ml-2" >
+                        <a href={`${url}get/${shortUrlData.shortUrl}/`} target="__blank" className="text-md lg:text-xl ml-2">{shortUrlData.shortUrl}</a>
+                        <div onClick={() => navigator.clipboard.writeText(`${url}get/${shortUrlData.shortUrl}/`)} className="cursor-pointer p-2 rounded-2xl hover:bg-slate-200 ml-2" >
                             <FaRegCopy />
                         </div>
                     </div>
