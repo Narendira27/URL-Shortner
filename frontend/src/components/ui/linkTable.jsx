@@ -1,7 +1,7 @@
 import UrlTable from './urlTable.jsx'
 import { Table, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-export default function LinkTable({ loginStatus, tableData, DeleteLinkfn }) {
+export default function LinkTable({ loginStatus, tableData, DeleteLinkfn, toastFn }) {
 
     return loginStatus ?
         (
@@ -17,7 +17,7 @@ export default function LinkTable({ loginStatus, tableData, DeleteLinkfn }) {
                         </TableRow>
                     </TableHeader>
                     {
-                        tableData.error === false ? (tableData.data.map((each) => <UrlTable key={each._id} details={{ shortId: each.short, Url: each.url, Clicks: each.clicks }} deleteFn={(id) => DeleteLinkfn(id)} />)) : null
+                        tableData.error === false ? (tableData.data.map((each) => <UrlTable toastFn={toastFn} key={each._id} details={{ shortId: each.short, Url: each.url, Clicks: each.clicks }} deleteFn={(id) => DeleteLinkfn(id)} />)) : null
                     }
                 </Table>
             </>

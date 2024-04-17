@@ -144,6 +144,9 @@ const Home = () => {
             console.log(Response)
             if (Response.status === "OK") {
                 setShortUrlData((prev) => ({ ...prev, ...Response.data.Response }))
+                toast({
+                    title: "Refresh complete",
+                })
                 fetchTableData()
             } else {
                 toast({
@@ -208,9 +211,9 @@ const Home = () => {
 
                 <ShortnerCard onClickButtonFn={onClickShortenUrl} onChangeUrlFn={OnChangeUrl} />
 
-                <PopupCard refreshClicksfn={refreshClicks} showCard={showCard} setShowCardfn={setShowCard} shortUrlData={shortUrlData} />
+                <PopupCard refreshClicksfn={refreshClicks} showCard={showCard} setShowCardfn={setShowCard} shortUrlData={shortUrlData} toastFn={toast} />
 
-                <LinkTable loginStatus={loginStatus} tableData={tableData} DeleteLinkfn={DeleteLink} />
+                <LinkTable loginStatus={loginStatus} tableData={tableData} DeleteLinkfn={DeleteLink} toastFn={toast} />
 
             </div >
 

@@ -3,7 +3,14 @@ import { FiRefreshCw } from "react-icons/fi";
 import { FaRegCopy } from "react-icons/fa";
 import url from '../../url'
 
-export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, shortUrlData }) {
+export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, shortUrlData, toastFn }) {
+    const copyShortUrl = () => {
+        navigator.clipboard.writeText(`${url}get/${shortUrlData.shortUrl}/`)
+        toastFn({
+            title: "Clipboard updated.",
+        })
+    }
+
     return showCard ? (
         <div className="absolute z-10 w-full h-full flex flex-col justify-center items-center " >
             <div className="bg-white w-fit  lg:w-1/5 flex flex-col shadow-xl p-5 rounded-xl" >
@@ -20,7 +27,7 @@ export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, sh
                     <div className="flex items-center m-1 lg:m-2">
                         <h1 className="text-md lg:text-xl">Short Url:</h1>
                         <a href={`${url}get/${shortUrlData.shortUrl}/`} target="__blank" className="text-md lg:text-xl ml-2">{shortUrlData.shortUrl}</a>
-                        <div onClick={() => navigator.clipboard.writeText(`${url}get/${shortUrlData.shortUrl}/`)} className="cursor-pointer p-2 rounded-2xl hover:bg-slate-200 ml-2" >
+                        <div onClick={copyShortUrl} className="cursor-pointer p-2 rounded-2xl hover:bg-slate-200 ml-2" >
                             <FaRegCopy />
                         </div>
                     </div>
@@ -33,5 +40,5 @@ export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, sh
                     </div>
                 </div>
             </div>
-        </div>) : null
+        </div >) : null
 }
