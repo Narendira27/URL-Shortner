@@ -38,9 +38,11 @@ const AuthForm = ({ cardloadingst, signIn, setSignInfn, onClickLoginfn, onClickR
                         <Input onChange={(e) => { OnChangeRegisterPasswordReEnterfn(e.target.value) }} type="password" placeholder="Re-EnterPassword" />
                         {authErrorSt.status ? <p className="text-sm text-red-500"> {authErrorSt.msg}</p> : null}
                         <Button onClick={onClickRegisterfn} className="bg-blue-800 hover:bg-blue-500">SignUp</Button>
-                        <p className="text-center">Already have an account?{" "} <span onClick={() => { setSignInfn(true) }} className="hover:underline hover:underline-offset-1 cursor-pointer">SignIn</span></p> </>) : <div className="w-full flex justify-center items-center p-10"><TailSpin height="40"
+                        <p className="text-center">Already have an account?{" "} <span onClick={() => { setSignInfn(true) }} className="hover:underline hover:underline-offset-1 cursor-pointer">SignIn</span></p> </>)
+                        : (<div className="w-full flex justify-center items-center p-10"><TailSpin height="40"
                             width="40"
-                            color="#46b9da" /></div>}
+                            color="#46b9da" /></div>)
+                    }
                 </>)}
         </DialogContent>
     </Dialog>)

@@ -24,6 +24,7 @@ const Home = () => {
     const [showCard, setShowCard] = useState(false)
     const [shortUrlData, setShortUrlData] = useState("")
     const [tableData, setTableData] = useState("")
+    const [textStatus, setTextStatus] = useState(false)
 
     // toast hook
     const { toast } = useToast()
@@ -109,16 +110,19 @@ const Home = () => {
     }
     const onClickShortenUrl = async () => {
         if (loginStatus) {
+            setTextStatus(true)
             const Response = await ShortUrlUser(url)
             if (Response.status === "OK") {
                 setShortUrlData(Response.data)
                 setShowCard(true)
+                setTextStatus(false)
             }
             else {
                 toast({
                     title: "Error",
                     description: Response.msg
                 })
+                setTextStatus(false)
             }
             fetchTableData()
             toast({
@@ -126,16 +130,19 @@ const Home = () => {
                 description: Response.msg
             })
         } else {
+            setTextStatus(true)
             const Response = await ShortUrl(url)
             if (Response.status === "OK") {
                 setShortUrlData(Response.data)
                 setShowCard(true)
+                setTextStatus(false)
             }
             else {
                 toast({
                     title: "Error",
                     description: Response.msg
                 })
+                setTextStatus(false)
             }
         }
 
@@ -211,7 +218,7 @@ const Home = () => {
                     OnChangeRegisterPasswordReEnter, OnChangeLoginPassword, OnChangeRegisterPassowrd
                 }} />
 
-                <ShortnerCard onClickButtonFn={onClickShortenUrl} onChangeUrlFn={OnChangeUrl} />
+                <ShortnerCard onClickButtonFn={onClickShortenUrl} onChangeUrlFn={OnChangeUrl} textStatus={textStatus} />
 
                 <PopupCard refreshClicksfn={refreshClicks} showCard={showCard} setShowCardfn={setShowCard} shortUrlData={shortUrlData} toastFn={toast} />
 
