@@ -1,4 +1,4 @@
-import url from "../../url"
+import { url } from "../../url"
 
 export default async function RefreshData(id) {
     const Request = await fetch(`${url}urls-stranger?shortId=${id}`, {

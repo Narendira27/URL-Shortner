@@ -1,7 +1,7 @@
 import { IoCloseSharp } from "react-icons/io5";
 import { FiRefreshCw } from "react-icons/fi";
 import { FaRegCopy } from "react-icons/fa";
-import url from '../../url'
+import { url } from '../../url'
 
 export default function PopupCard({ showCard, setShowCardfn, refreshClicksfn, shortUrlData, toastFn }) {
     const copyShortUrl = () => {

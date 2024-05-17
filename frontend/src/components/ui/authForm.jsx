@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { TailSpin } from "react-loader-spinner";
 import { MdOutlineLogin } from "react-icons/md";
 
-const AuthForm = ({ cardloadingst, signIn, setSignInfn, onClickLoginfn, onClickRegisterfn, OnChangeLoginEmailfn, OnChangeLoginPasswordfn, OnChangeRegisterEmailfn, OnChangeRegisterPassowrdfn, OnChangeRegisterPasswordReEnterfn, authErrorSt }) => {
+const AuthForm = ({ cardloadingst, signIn, setSignInfn, onClickLoginfn, onClickRegisterfn, OnChangeLoginEmailfn, OnChangeLoginPasswordfn, OnChangeRegisterEmailfn, OnChangeRegisterPassowrdfn, OnChangeRegisterPasswordReEnterfn, authErrorSt, resendMailfn }) => {
     return (<Dialog>
         <DialogTrigger className="text-lg md:text-xl p-2 md:p-3 bg-zinc-300 rounded-xl md:rounded-lg flex justify-center items-center hover:bg-blue-300"><MdOutlineLogin /></DialogTrigger>
         <DialogContent>
@@ -21,14 +21,14 @@ const AuthForm = ({ cardloadingst, signIn, setSignInfn, onClickLoginfn, onClickR
                     </DialogHeader>
                     <Input onChange={(e) => { OnChangeLoginEmailfn(e.target.value) }} type="email" placeholder="Email" />
                     <Input onChange={(e) => { OnChangeLoginPasswordfn(e.target.value) }} type="password" placeholder="Password" />
-                    {authErrorSt.status ? <p className="text-sm text-red-500"> {authErrorSt.msg}</p> : null}
+                    {authErrorSt.status ? <div className="flex items-center justify-between"> <p className="text-sm text-red-500"> {authErrorSt.msg}</p>
+                        {authErrorSt.msg == "User not Verified" ? <div onClick={() => resendMailfn()} className="text-sm font-bold cursor-pointer hover:underline">resend mail</div> : null} </div> : null}
                     <Button onClick={onClickLoginfn} className="bg-blue-800 hover:bg-blue-500">Signin</Button>
                     <p className="text-center">Don't have an acount? <span onClick={() => { setSignInfn(false) }} className="hover:underline hover:underline-offset-1 cursor-pointer">SignUp</span></p>
                 </>) : <div className="w-full flex justify-center items-center p-10"><TailSpin height="40"
                     width="40"
                     color="#46b9da" /></div>) :
                 (<>
-
                     {!cardloadingst ? (<>
                         <DialogHeader>
                             <DialogTitle>Sign Up</DialogTitle>

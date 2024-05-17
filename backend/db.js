@@ -9,6 +9,7 @@ mongoose.connect(db_url)
 const UserSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
+    verified: { type: Boolean, default: false }
 })
 
 const UrlSchema = new mongoose.Schema({

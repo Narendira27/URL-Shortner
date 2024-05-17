@@ -10,6 +10,7 @@ import AuthButton from "@/components/ui/authButton.jsx";
 import LinkTable from "@/components/ui/linkTable.jsx";
 
 import { LoginHandler, ShortUrl, ShortUrlUser, AuthCheck, RefreshData, RefreshDataUser, GetUrlList, DeleteUrl, RegisterHandler } from '../functions/apiRequest/'
+import ResendMail from "@/functions/apiRequest/reSendEmail.js";
 
 
 const Home = () => {
@@ -25,6 +26,7 @@ const Home = () => {
     const [shortUrlData, setShortUrlData] = useState("")
     const [tableData, setTableData] = useState("")
     const [textStatus, setTextStatus] = useState(false)
+    const [resendMail, setResendMail] = useState("")
 
     // toast hook
     const { toast } = useToast()
@@ -97,7 +99,11 @@ const Home = () => {
             setAuthError((prev) => ({ ...prev, status: false, msg: "" }))
             Cookies.set('jwt', Response.jwt)
             setCardLoading(false)
-            setLoginStatus(true)
+            toast({
+                title: "Verify Email",
+                description: "Verify email and login to continue"
+            })
+            setSignIn(true)
         }
         else {
             setCardLoading(false)
@@ -186,6 +192,19 @@ const Home = () => {
             })
         }
     }
+    const resendMailfn = async () => {
+        const Response = await ResendMail(resendMail)
+        if (Response.msg === "OK") {
+            return toast({
+                title: "Mail Sent",
+                description: "Verify and Login to continue"
+            })
+        }
+        toast({
+            title: "Something Went Wrong",
+            description: "Please Try again Later"
+        })
+    }
     // link event
     const OnChangeUrl = (value) => {
         setUrl(value)
@@ -193,6 +212,7 @@ const Home = () => {
     // form events 
     const OnChangeLoginEmail = (value) => {
         setLoginData((prev) => ({ ...prev, email: value }))
+        setResendMail(value)
     }
     const OnChangeLoginPassword = (value) => {
         setLoginData((prev) => ({ ...prev, password: value }))
@@ -209,13 +229,13 @@ const Home = () => {
 
     return (
         <>
-            <div className="flex flex-col items-center  bg-zinc-100 min-h-screen min-w-screen">
+            <div className="flex flex-col items-center bg-zinc-100 min-h-screen min-w-screen">
 
                 <Title text={"Short URL"} />
 
                 <AuthButton state={{ loginStatus, cardloading, signIn, authError }} fns={{
                     setSignIn, onLogout, onClickLogin, onClickRegister, OnChangeLoginEmail, OnChangeRegisterEmail,
-                    OnChangeRegisterPasswordReEnter, OnChangeLoginPassword, OnChangeRegisterPassowrd
+                    OnChangeRegisterPasswordReEnter, OnChangeLoginPassword, OnChangeRegisterPassowrd, resendMailfn
                 }} />
 
                 <ShortnerCard onClickButtonFn={onClickShortenUrl} onChangeUrlFn={OnChangeUrl} textStatus={textStatus} />

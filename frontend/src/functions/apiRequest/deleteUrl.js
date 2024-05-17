@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import url from '../../url'
+import { url } from "../../url"
 
 export default async function DeleteUrl(userUrl) {
     const authToken = Cookies.get("jwt")

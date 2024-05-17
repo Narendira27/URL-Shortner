@@ -1,4 +1,4 @@
-import url from "../../url"
+import { url } from "../../url"
 
 export default async function LoginHandler(loginData) {
     const Request = await fetch(`${url}login`, {

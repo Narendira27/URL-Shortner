@@ -1,5 +1,5 @@
 import Cookies from "js-cookie"
-import url from "../../url"
+import { url } from "../../url"
 
 export default async function ShortUrlUser(inputUrl) {
     const authToken = Cookies.get('jwt')

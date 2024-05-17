@@ -10,6 +10,8 @@ const ShortUniqueId = require('short-unique-id');
 
 require("dotenv").config();
 const jwtPass = process.env.jwt
+const mailUrl = process.env.mailUrl
+const mailPass = process.env.mailPass
 
 const app = express()
 app.use(express.json())
@@ -51,6 +53,7 @@ const authMiddleware = (req, res, next) => {
     }
 }
 
+
 app.get("/me", authMiddleware, (req, res) => {
     res.status(200).send({ authenticated: true })
 })
@@ -63,11 +66,72 @@ app.post("/register", inputValidationMiddleware, async (req, res) => {
             email: req.body.email,
             password: encryptPassword
         })
-        const token = jwt.sign({ id: DbQuery._id.toString() }, jwtPass)
-        res.status(200).send({ jwt: token })
+        const mailBody = {
+            "user": "URL Shortner",
+            "recipient": req.body.email,
+            "url": "https://shortner.narendira.tech"
+        }
+        const generateToken = jwt.sign({ user: "URL Shortner" }, mailPass)
+        const sendMail = await fetch(mailUrl + "send", { headers: { 'Content-Type': "application/json", 'Authorization': `Bearer ${generateToken}` }, method: "POST", "body": JSON.stringify(mailBody) })
+        const response = await sendMail.json()
+        if (!response.sent) {
+            throw new Error("Resource Cannot be accessed")
+        }
+        // const token = jwt.sign({ id: DbQuery._id.toString() }, jwtPass)
+        // res.status(200).send({ jwt: token })
+        res.status(200).send({ msg: "ok" })
     } catch (e) {
         console.log(e)
-        res.status(400).send({ msg: e.message.substr(0, 6) })
+        res.status(400).send({ msg: e })
+    }
+})
+
+app.post("/resendMail", async (req, res) => {
+    const mailBody = JSON.stringify({
+        "user": "URL Shortner",
+        "recipient": req.body.email,
+        "url": "https://shortner.narendira.tech"
+    })
+    const generateToken = jwt.sign({ user: "URL Shortner" }, mailPass)
+    try {
+        const sendMail = await fetch(mailUrl + "send", { headers: { 'Content-Type': "application/json", 'Authorization': `Bearer ${generateToken}` }, method: "POST", "body": mailBody })
+        const response = await sendMail.json()
+        if (!response.sent) {
+            throw new Error("Resource Cannot be accessed")
+        }
+        res.status(200).send({ msg: "Ok" })
+    } catch (e) {
+        console.log(e)
+        res.status(400).send({ msg: e })
+    }
+})
+
+app.post("/verifyEmail", async (req, res) => {
+    try {
+        const sendBody = JSON.stringify({
+            user: "URL Shortner",
+            token: req.body.token
+        })
+        const authToken = jwt.sign({ user: "URL Shortner" }, mailPass)
+        const request = await fetch(mailUrl + "verify", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            method: "POST",
+            body: sendBody
+        })
+        const jsonRes = await request.json()
+        if (jsonRes.msg === "Invalid inputs") {
+            throw new Error("Resource Cannot be accessed")
+        }
+        const decode = jwt.decode(req.body.token)
+        console.log(decode)
+        const updateUser = await User.updateOne({ email: decode.email }, { verified: true })
+        res.status(200).json({ msg: "Ok" })
+    } catch (e) {
+        console.log(e)
+        res.status(400).send({ msg: e.msg })
     }
 })
 
@@ -76,6 +140,10 @@ app.post("/login", inputValidationMiddleware, async (req, res) => {
         const DbQuery = await User.findOne({ email: req.body.email })
         const id = DbQuery.id.toString()
         const check = bcrypt.compareSync(req.body.password, DbQuery.password)
+        const verfiedUser = DbQuery.verified
+        if (!verfiedUser) {
+            return res.status(403).send({ msg: "User not Verified" })
+        }
         if (check) {
             const token = jwt.sign({ id }, jwtPass)
             return res.status(200).send({ jwt: token })

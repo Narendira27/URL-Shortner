@@ -1,4 +1,4 @@
-import url from "../../url"
+import { url } from "../../url"
 import Cookies from "js-cookie"
 
 export default async function RefreshDataUser(id) {

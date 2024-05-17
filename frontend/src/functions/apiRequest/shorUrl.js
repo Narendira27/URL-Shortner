@@ -1,4 +1,4 @@
-import url from "../../url"
+import { url } from "../../url"
 
 export default async function ShortUrl(inputUrl) {
     const Request = await fetch(`${url}url-stranger`, {

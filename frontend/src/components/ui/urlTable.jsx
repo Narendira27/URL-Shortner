@@ -1,7 +1,7 @@
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table"
-import url from '../../url'
+import { url } from '../../url'
 
 export default function UrlTable({ details, deleteFn, toastFn }) {
     const { shortId, Url, Clicks } = details

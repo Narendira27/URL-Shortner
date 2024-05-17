@@ -1,4 +1,4 @@
-import url from "../../url"
+import { url } from "../../url"
 
 export default async function RegisterHandler(registerData) {
     if (registerData.password === registerData.passwordConfirmation) {
@@ -10,9 +10,15 @@ export default async function RegisterHandler(registerData) {
         })
         const Response = await Request.json()
         if (Request.ok) {
-            return ({ status: "OK", jwt: Response.jwt })
+            return ({ status: "OK" })
         }
-        return ({ status: "FAILED", msg: Response.msg })
+
+        if (Response.msg.code === 11000) {
+            return ({ status: "FAILED", msg: "User already exists" })
+        }
+        const ResponseErrMsg = Response.msg.errorResponse
+
+        return ({ status: "FAILED", msg: ResponseErrMsg.errmsg })
     }
     return ({ status: "FAILED", msg: "Password doesn't match" })
 }
