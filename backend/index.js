@@ -74,7 +74,7 @@ app.post("/register", inputValidationMiddleware, async (req, res) => {
             "recipient": req.body.email,
             "url": "https://shortner.narendira.tech"
         }
-        const generateToken = jwt.sign({ user: "URL Shortner" }, mailPass)
+        const generateToken = jwt.sign({ user: "Shortner" }, mailPass)
         const sendMail = await fetch(mailUrl + "send", { headers: { 'Content-Type': "application/json", 'Authorization': `Bearer ${generateToken}` }, method: "POST", "body": JSON.stringify(mailBody) })
         const response = await sendMail.json()
         if (!response.sent) {
@@ -95,7 +95,7 @@ app.post("/resendMail", async (req, res) => {
         "recipient": req.body.email,
         "url": "https://shortner.narendira.tech"
     })
-    const generateToken = jwt.sign({ user: "URL Shortner" }, mailPass)
+    const generateToken = jwt.sign({ user: "Shortner" }, mailPass)
     try {
         const sendMail = await fetch(mailUrl + "send", { headers: { 'Content-Type': "application/json", 'Authorization': `Bearer ${generateToken}` }, method: "POST", "body": mailBody })
         const response = await sendMail.json()
@@ -115,7 +115,7 @@ app.post("/verifyEmail", async (req, res) => {
             user: "URL Shortner",
             token: req.body.token
         })
-        const authToken = jwt.sign({ user: "URL Shortner" }, mailPass)
+        const authToken = jwt.sign({ user: "Shortner" }, mailPass)
         const request = await fetch(mailUrl + "verify", {
             headers: {
                 'Content-Type': 'application/json',
