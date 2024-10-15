@@ -53,6 +53,9 @@ const authMiddleware = (req, res, next) => {
     }
 }
 
+app.get("/", (req, res) => {
+  res.send({ status: "ok", success: true });
+});
 
 app.get("/me", authMiddleware, (req, res) => {
     res.status(200).send({ authenticated: true })
