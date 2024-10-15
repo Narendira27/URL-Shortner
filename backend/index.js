@@ -70,7 +70,7 @@ app.post("/register", inputValidationMiddleware, async (req, res) => {
             password: encryptPassword
         })
         const mailBody = {
-            "user": "URL Shortner",
+            "user": "Shortner",
             "recipient": req.body.email,
             "url": "https://shortner.narendira.tech"
         }
@@ -91,7 +91,7 @@ app.post("/register", inputValidationMiddleware, async (req, res) => {
 
 app.post("/resendMail", async (req, res) => {
     const mailBody = JSON.stringify({
-        "user": "URL Shortner",
+        "user": "Shortner",
         "recipient": req.body.email,
         "url": "https://shortner.narendira.tech"
     })
@@ -112,7 +112,7 @@ app.post("/resendMail", async (req, res) => {
 app.post("/verifyEmail", async (req, res) => {
     try {
         const sendBody = JSON.stringify({
-            user: "URL Shortner",
+            user: "Shortner",
             token: req.body.token
         })
         const authToken = jwt.sign({ user: "Shortner" }, mailPass)
